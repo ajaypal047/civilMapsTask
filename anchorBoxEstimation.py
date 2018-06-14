@@ -1,7 +1,3 @@
-"""
-parse PASCAL VOC xml annotations
-"""
-
 import os
 import sys
 import csv
@@ -120,25 +116,13 @@ def kmeans_iou(k, centroids, points, iter_count=0, iteration_cutoff=25, feature_
     # Get anchor boxes from best clusters
     anchors = np.asarray([np.mean(cluster, axis=0) for cluster in best_clusters])
     anchors = anchors[anchors[:, 0].argsort()]
-    print("k-means clustering pascal anchor points (original coordinates) \
+    print("k-means clustering udacity data anchor points (original coordinates) \
     \nFound at iteration {} with best average IoU: {} \
     \n{}".format(best_avg_iou_iteration, best_avg_iou, anchors*feature_size))
 
     return anchors
 
 if __name__ == "__main__":
-
-    # examples
-    # k, pascal, coco
-    # 1, 0.30933335617, 0.252004954777
-    # 2, 0.45787906725, 0.365835079771
-    # 3, 0.53198291772, 0.453180358467
-    # 4, 0.57562962803, 0.500282182136
-    # 5, 0.58694643198, 0.522010174068
-    # 6, 0.61789602056, 0.549904351137
-    # 7, 0.63443906479, 0.569485509501
-    # 8, 0.65114747974, 0.585718648162
-    # 9, 0.66393113546, 0.601564171461
 
     # k-means picking the first k points as centroids
     img_size = 416
@@ -148,9 +132,8 @@ if __name__ == "__main__":
     centroids = np.random.random((k, 2))
     random_anchors = kmeans_iou(k, centroids, random_data)
 	
-    pascal_data = udacity_voc_csv("C:/Users/Arpit/Downloads/udacity.csv")
-    centroids = pascal_data[np.random.choice(np.arange(len(pascal_data)), k, replace=False)]
-    # centroids = pascal_data[:k]
-    pascal_anchors = kmeans_iou(k, centroids, pascal_data, feature_size=img_size / 32)
+    udacity_data = udacity_voc_csv("C:/Users/Arpit/Downloads/udacity.csv")
+    centroids = udacity_data[np.random.choice(np.arange(len(udacity_data)), k, replace=False)]
+    udacity_anchors = kmeans_iou(k, centroids, udacity_data, feature_size=img_size / 32)
 
     print('done')
